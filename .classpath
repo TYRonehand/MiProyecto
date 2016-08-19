@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="lib" path="C:/Users/gutie/Dropbox/proyectoGWT/lib/mysql-connector-java-3.0.17-ga-bin.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" output="test-classes" path="test"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/gwtbootstrap3"/>
+	<classpathentry kind="lib" path="E:/Users/Carlos/.m2/repository/com/google/gwt/gwt-servlet/2.1.0/gwt-servlet-2.1.0.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="com.google.gwt"/>
+			<attribute name="maven.artifactId" value="gwt-servlet"/>
+			<attribute name="maven.version" value="2.1.0"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+</classpath>

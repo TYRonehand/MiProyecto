@@ -1,0 +1,85 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+   			 xmlns:gwt='urn:import:com.google.gwt.user.client.ui' >
+	<ui:style>
+	.labelwarning{
+		color:red;
+	}
+	.HTMLheader{
+		height:430px;
+		width:319px;
+		align:center;
+		margin:auto;
+	}
+	</ui:style>
+	<gwt:HTMLPanel  addStyleNames='{style.HTMLheader}' >
+		
+		<div class="login">
+	        <div class="loginscreen">
+	
+	            <!-- logo -->
+	            <div id= "logologin" class="logologin">
+	                <a href="http://www.ucsc.cl">
+	                	<gwt:Image url="assets/img/logo1.jpg" width="100%" height="139px"/>
+	                </a>
+	            </div>
+	            <!-- form -->
+	            <div class="apptitle">
+	                <h1>Register</h1>
+	            </div>
+	            <div class="loginform">
+	            
+	            	<!-- country -->
+	                <div class="controlgroup">
+	                	<gwt:InlineLabel  text="Country:" horizontalAlignment="ALIGN_CENTER" width="100%"/>
+						<gwt:ListBox ui:field="countryBox" tabIndex="0"  focus="true"/>
+	                </div>
+	               <!-- nombre -->
+	                <div class="controlgroup">
+	                    <gwt:InlineLabel  text="Name:" horizontalAlignment="ALIGN_CENTER" width="100%"/>
+						<gwt:TextBox ui:field="nameInput"  alignment="JUSTIFY" width="100%" textAlignment="ALIGN_CENTER" maxLength="30"  visibleLength="30" tabIndex="1" direction="LTR"/>
+						<gwt:Label ui:field="labelError1" addStyleNames='{style.labelwarning}' width="100%" direction="RTL" horizontalAlignment="ALIGN_CENTER"  text="minimum lenght 3" visible="false"/>
+					</div>
+					
+					<!-- apellido -->
+	                <div class="controlgroup">
+	                	<gwt:InlineLabel  text="LastName:" horizontalAlignment="ALIGN_CENTER" width="100%"/>
+						<gwt:TextBox ui:field="lastnameInput" alignment="JUSTIFY" width="100%" textAlignment="ALIGN_CENTER" maxLength="30"  visibleLength="30" direction="LTR" tabIndex="2"/>
+						<gwt:Label ui:field="labelError2" addStyleNames='{style.labelwarning}' width="100%" direction="RTL" horizontalAlignment="ALIGN_CENTER" text="minimum lenght 3" visible="false"/>
+					</div>
+					
+					<!-- email -->
+	                <div class="controlgroup">
+	                    <gwt:InlineLabel  text="Email:" horizontalAlignment="ALIGN_CENTER" width="100%"/>
+						<gwt:TextBox ui:field="mailInput" alignment="JUSTIFY" width="100%" textAlignment="ALIGN_CENTER" maxLength="30"  visibleLength="30"  direction="LTR" tabIndex="3"/>
+						<gwt:Label ui:field="labelError3" addStyleNames='{style.labelwarning}' width="100%" direction="RTL" horizontalAlignment="ALIGN_CENTER" text="minimum lenght 6" visible="false"/>
+					</div>
+										
+	                <!-- contraseña -->
+	                <div class="controlgroup">
+	                    <gwt:InlineLabel text="Password:" horizontalAlignment="ALIGN_CENTER" width="30px"/>
+						<gwt:PasswordTextBox ui:field="passInput"  maxLength="30" width="100%" textAlignment="ALIGN_CENTER"  alignment="JUSTIFY" direction="LTR" tabIndex="4"/>
+						<gwt:Label ui:field="labelError4" addStyleNames='{style.labelwarning}' width="100%" direction="RTL" horizontalAlignment="ALIGN_CENTER"  text="minimum lenght 6" visible="false"/>
+					</div>
+					
+					<!-- contraseña repetir -->
+	                <div class="controlgroup">
+	                    <gwt:InlineLabel text="Repeat Password:" horizontalAlignment="ALIGN_CENTER" width="30px"/>
+						<gwt:PasswordTextBox ui:field="pass2Input" maxLength="30" width="100%" textAlignment="ALIGN_CENTER"  alignment="JUSTIFY" direction="LTR" tabIndex="5"/>
+						<gwt:Label ui:field="labelError5" addStyleNames='{style.labelwarning}' width="100%" direction="RTL" horizontalAlignment="ALIGN_CENTER"  text="minimum lenght 6" visible="false"/>
+					</div>
+					
+	                <!-- boton -->
+	                <gwt:Button ui:field="registerBtn" text="Register" width="100%"  height="42px" tabIndex="6">Login</gwt:Button>
+					
+	                <!-- salir -->
+	            	<div class="loginlink">
+	                	<gwt:Hyperlink ui:field="backLink" text="Go back" targetHistoryToken="" width="98px"/>
+	                </div>
+	                
+	            </div>
+	        </div>
+    	</div>
+		
+	</gwt:HTMLPanel>
+</ui:UiBinder> 

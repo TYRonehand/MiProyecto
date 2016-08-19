@@ -1,0 +1,48 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.image-logo{
+			padding-bottom: 15px;
+			border: none;
+			margin-bottom: 4px;
+			height:200px;
+		}
+	.HTMLheader{
+		padding-top:50px
+	}
+	</ui:style>
+	<g:HTMLPanel addStyleNames='{style.HTMLheader}'>
+		
+		<!-- PANELE INICIO-->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="panel">
+
+                    <!--Titulo-->
+                    <div class="panel-heading" align="left">
+                        <h3  class="panel-title">
+	                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+	                              Resumen aplicación.
+	                        </a>
+                    	</h3>
+                    </div>
+
+                    <!--Texto-->
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                        
+                            <div class="panel-image" >
+                                <g:Image url="assets/img/logo1.jpg" addStyleNames='{style.image-logo}'  ></g:Image>
+                            </div> 
+                            <div class="panel-text"   align="justify">
+                                <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

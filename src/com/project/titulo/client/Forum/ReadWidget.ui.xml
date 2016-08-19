@@ -1,0 +1,166 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:gwt="urn:import:com.google.gwt.user.client.ui" xmlns:w="urn:import:com.google.gwt.widget.client">
+	<ui:style>
+	
+	.titleInput{
+		padding-top:5px;
+		width:100%;
+	}
+	.textArea{
+		padding-top:5px;
+		width:100%;
+	}
+	.submitBtn{
+		padding-top:5px;
+		width:45%;
+		margin:2px
+	}
+	.HTMLheader{
+		padding-top:50px
+	}
+	</ui:style>
+	<gwt:HTMLPanel addStyleNames='{style.HTMLheader}'>
+	
+	<!-- PANELE INICIO-->
+        <div class="row">
+            <div class="col-lg-12 col-lg-9 col-md-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Community
+                    </header>
+                    <div class="panel-body">
+                    
+                    	<!-- TOPIC PRINCIPAL -->
+                    
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                Title: Title of topic
+                            </div>
+                            <div class="panel-content">
+                                <b>created by USERNAME | OCUPATION | CREATION</b>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting</p>
+                                <p align="right"><a href="#myModal" data-toggle="modal">Response</a></p>
+                            </div>
+                        </div>
+                        
+                        <!-- TOPIC RESPONSE BEGIN -->
+                        
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Re: Title of topic
+                            </div>
+                            <div class="panel-content">
+                                <p align="right"><b>from USERNAME | OCUPATION | CREATION</b></p>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting</p>
+                                <p align="right"><a href="#myModal-2" data-toggle="modal">Erase</a> | <a href="#myModal-1" data-toggle="modal">Edit</a></p>
+                            </div>
+                        </div>
+
+		
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Re: Title of topic
+                            </div>
+                            <div class="panel-content">
+                                <p align="right"><b>from USERNAME | OCUPATION | CREATION</b></p>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting</p>
+                                <p align="right"><a href="#myModal" data-toggle="modal">Response</a> </p>
+                            </div>
+                        </div>
+                        
+						<!-- TOPIC RESPONSE END -->
+
+
+
+                        <!-- MODALS -->
+                        
+                        <!-- NEW ANSWER -->
+                        
+                        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <!-- Titulo form -->
+                                    <div class="modal-header">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">New Response</h4>
+                                    </div>
+
+                                    <!-- cuerpo form -->
+                                    <div class="modal-body">
+
+                                       	<gwt:Label text="Your Response" horizontalAlignment="ALIGN_CENTER"/>
+		        						<gwt:RichTextArea addStyleNames='{style.textArea}'/>
+ 										<w:TextButton decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Submit</w:TextButton>
+ 										<w:TextButton decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Clean</w:TextButton>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- EDITION RESPONSE -->
+                        
+                        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal-1" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <!-- Titulo form -->
+                                    <div class="modal-header">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">Edition</h4>
+                                    </div>
+
+                                    <!-- cuerpo form -->
+                                    <div class="modal-body">
+
+                                       	<gwt:Label text="Your Response" horizontalAlignment="ALIGN_CENTER"/>
+		        						<gwt:RichTextArea addStyleNames='{style.textArea}'/>
+ 										<w:TextButton decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Submit</w:TextButton>
+ 										<w:TextButton decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Clean</w:TextButton>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- DELETE RESPONSE -->
+                        
+                        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal-2" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <!-- Titulo form -->
+                                    <div class="modal-header">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">Delete My Response</h4>
+                                    </div>
+
+                                    <!-- cuerpo form -->
+                                    <div class="modal-body">
+                                    
+											<div class="panel-content">
+                                                <p><b>Are you sure you want to delete response?</b></p>
+                                            </div>  
+                                            <!-- boton -->
+                                            <div class="panel-content">
+                                                <w:TextButton decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Delete</w:TextButton>
+                                            </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- END MODAL-->
+
+
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- WIDGET END -->
+	
+	</gwt:HTMLPanel>
+</ui:UiBinder> 
