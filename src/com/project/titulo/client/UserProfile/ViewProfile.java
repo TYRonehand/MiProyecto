@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.project.titulo.client.ServerService;
 import com.project.titulo.client.ServerServiceAsync;
-import com.project.titulo.client.model.User;
+import com.project.titulo.shared.model.User;
 
 public class ViewProfile extends Composite {
 

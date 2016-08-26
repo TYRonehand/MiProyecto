@@ -1,15 +1,134 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:w="urn:import:com.google.gwt.widget.client" 
+  	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 	<ui:style>
-	
+	.cellTable {
+      	border-bottom: 1px solid #ccc;
+      	text-align: left;
+      	margin-bottom: 4px;
+		width:100%;
+    }
+	.BtnPlot{
+		width:100%;
+		height:45px;
+		color: #fff;
+	    background-color: #337ab7;
+	    border-color: #2e6da4;
+    }
+    .BtnSave{
+		width:25%;
+		height:45px;
+    }
+    .inputPrimary{
+		width:50px;
+	}
+	.gridOpt{
+		margin:5px;
+		align:left;
+		widht:100%;
+	}
+	.HTMLheader{
+		padding-top:50px
+	}
 	</ui:style>
-	<g:HTMLPanel>
-	
-	
-	
-	
-	
-	
+	<g:HTMLPanel addStyleNames='{style.HTMLheader}'>
+		
+		
+	<!--  Menu opciones edición-->
+        <div class="row">
+        
+        	<!-- COLLAPSE 1 PLOT FILES-->
+        	
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                
+                <!-- COLLAPSE 2  SAVE IMAGE-->
+                <section class="panel">
+                    <!--Titulo-->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                  Save Image
+                            </a>
+                        </h3>
+                    </div>
+
+                    <!--Texto-->
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <!-- Botones -->
+                            <w:TextButton addStyleNames='{style.BtnSave}' text="Spacing" decoration="PRIMARY" tabIndex="1"> </w:TextButton>
+                            <w:TextButton addStyleNames='{style.BtnSave}' text="Error Ratio" decoration="PRIMARY" tabIndex="2"> </w:TextButton>
+                            <w:TextButton addStyleNames='{style.BtnSave}' text="Generational Distance" decoration="PRIMARY" tabIndex="3"> </w:TextButton>
+                            <w:TextButton addStyleNames='{style.BtnSave}' text="Entropy" decoration="PRIMARY" tabIndex="4"> </w:TextButton>
+                            <w:TextButton addStyleNames='{style.BtnSave}' text="Coverage" decoration="PRIMARY" tabIndex="4"> </w:TextButton>
+                            
+                        </div>
+                    </div>
+                </section>
+                
+            </div>  
+            
+            <!-- COLLAPSE 5 LIMITS -->
+            
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+            	<section class="panel">
+                    <!--Titulo-->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                  Metric Description
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="collapseFive" class="panel-collapse collapse in">
+	                    <div class="panel-body">
+	                    
+	                        <!-- Metric description -->
+	                        <g:HTML ui:field="metricText"></g:HTML>
+							
+	                    </div>
+                    </div>
+                </section>
+            </div>
+ 
+        	<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <h3 class="panel-title">My Files</h3>
+                    </header>
+                    <div class="panel-body">
+                        
+                        <table cellspacing='0' cellpadding='0' style='width:100%;'>
+					      <tr>
+					        <td valign='top'>
+					          <c:CellTable addStyleNames='{style.cellTable}' pageSize='15' ui:field='cellTable' tabIndex="13" />
+					        </td>
+					      </tr>
+					      <tr>
+					        <td align='center'>
+       							<c:SimplePager ui:field='pager'  location="CENTER"/> 
+					        </td>
+					      </tr>
+					    </table>
+                        
+                        
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Tabla con archivos -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	</g:HTMLPanel>
 </ui:UiBinder> 

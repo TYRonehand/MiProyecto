@@ -31,7 +31,7 @@
 	            
 	            	<!-- country -->
 	                <div class="controlgroup">
-	                	<gwt:InlineLabel  text="Country:" horizontalAlignment="ALIGN_CENTER" width="100%"/>
+	                	<gwt:InlineLabel  text="Country:" horizontalAlignment="ALIGN_CENTER" width="94%"/>
 						<gwt:ListBox ui:field="countryBox" tabIndex="0"  focus="true"/>
 	                </div>
 	               <!-- nombre -->

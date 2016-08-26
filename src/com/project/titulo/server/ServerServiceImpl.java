@@ -1,14 +1,22 @@
 package com.project.titulo.server;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.project.titulo.client.model.*;
 import com.project.titulo.client.ServerService;
+import com.project.titulo.shared.model.Answer;
+import com.project.titulo.shared.model.ResumeTopic;
+import com.project.titulo.shared.model.Topic;
+import com.project.titulo.shared.model.User;
+import com.project.titulo.shared.model.UserFile;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -54,6 +62,40 @@ public class ServerServiceImpl extends RemoteServiceServlet implements ServerSer
 	
 	/*--------------RPC FUNCTIONS---------------*/
 	
+	/*ADMIN*/
+	//user info validation
+	@Override
+	public User authenticateAdmin(String user, String pass) throws IllegalArgumentException
+	{
+		 User myadmin = null;
+		 
+		 try 
+		 {
+			 //consultamos a base de datos
+			 String Query= "SELECT * FROM administrator WHERE mail = '"+user+"' AND password = '"+pass+"' LIMIT 1";
+			 PreparedStatement ps = conn.prepareStatement(Query);
+			 ResultSet result = ps.executeQuery();
+			 //recorremos resultado
+			 while (result.next()) 
+			 {
+				 
+				 myadmin = new User( result.getString("idadmin"), result.getString("mail"), result.getString("name"), 
+						 			result.getString("lastname"), "", "Administrator", 
+						 			"", "", "", "","", "false", "");
+			 }
+			 result.close();
+			 ps.close();
+		 } 
+		 catch (SQLException sqle) 
+		 {
+		 	GWT.log(sqle.toString());
+		 	sqle.printStackTrace();
+		 	return null;
+		 }
+		 return myadmin;
+	}
+	
+	
 	/*USER------------------------------------------------------------------------------*/
 	//consulta si existe usuario
 	@Override
@@ -94,26 +136,20 @@ public class ServerServiceImpl extends RemoteServiceServlet implements ServerSer
 		 try 
 		 {
 			 //consultamos a base de datos
-			 String Query= "SELECT * FROM user WHERE mail = '"+user+"' AND password = '" + pass + "' LIMIT 1";
+			 String Query= "SELECT * FROM user WHERE mail = '"+user+"' AND password = '"+pass+"' LIMIT 1";
 			 PreparedStatement ps = conn.prepareStatement(Query);
 			 ResultSet result = ps.executeQuery();
 			 //recorremos resultado
 			 while (result.next()) 
 			 {
-				 miuser = new User( result.getString("iduser"),
-						 			result.getString("mail"), 
-						 			result.getString("name"), 
-						 			result.getString("lastname"), 
-						 			result.getString("country"), 
-						 			result.getString("ocupation"), 
-						 			result.getString("web"), 
-						 			result.getString("university"),
-						 			"",
-						 			result.getString("creation"),
-						 			result.getString("registered"),
-						 			result.getString("banned"),
-						 			""
-						 		  );
+				 String ban;
+				 if(result.getBoolean("banned")) ban="true";
+				 else ban="false";
+				 
+				 miuser = new User( result.getString("iduser"), result.getString("mail"), result.getString("name"), 
+						 			result.getString("lastname"), result.getString("country"), result.getString("ocupation"), 
+						 			result.getString("web"), result.getString("university"), "", result.getString("creation"),
+						 			result.getString("registered"), ban, "");
 			 }
 			 result.close();
 			 ps.close();
@@ -342,8 +378,7 @@ public class ServerServiceImpl extends RemoteServiceServlet implements ServerSer
 			 String Query= " UPDATE topic SET "
 			 			 + "title='"+myTopic.getTitle()+"', "
 			 			 + "description='"+myTopic.getDescription()+"', "
-			 			 + "edition='"+myTopic.getEdition()+"', "
-			 			 + "enabled='"+myTopic.getEnabled()+"' "
+			 			 + "edition='"+myTopic.getEdition()+"' "
 			 			 + "WHERE idtopic="+myTopic.getIdtopic()+" ";
 			 
 			//execute query
@@ -453,12 +488,11 @@ public class ServerServiceImpl extends RemoteServiceServlet implements ServerSer
 	
 	/*FILES------------------------------------------------------------------------------*/
 	//all user files 
-	@SuppressWarnings("null")
 	@Override
 	public List<UserFile> getUserFiles(String user) throws IllegalArgumentException {
 
 		 
-		 List<UserFile> listFiles = null;
+		 List<UserFile> listFiles = new ArrayList<UserFile>();
 		 try 
 		 {
 			 //consultamos a base de datos
@@ -468,15 +502,12 @@ public class ServerServiceImpl extends RemoteServiceServlet implements ServerSer
 			 //recorremos resultado
 			 while (result.next()) 
 			 {
-				 //create userfile
-				 UserFile aux = new UserFile(   result.getString("iddatafile"), 
-							 					result.getString("iduser"),
-									 			result.getString("title"), 
-									 			result.getString("description"),  
-									 			result.getString("creation")
-						 		  			);
 				 //add element to list
-				 listFiles.add(aux);
+				 listFiles.add(new UserFile(result.getString("iddatafile"), 
+						 					result.getString("iduser"),
+								 			result.getString("title"), 
+								 			result.getString("description"),  
+								 			result.getString("creation")));
 			 }
 			 result.close();
 			 ps.close();
@@ -492,25 +523,41 @@ public class ServerServiceImpl extends RemoteServiceServlet implements ServerSer
 	//add file
 	@Override
 	public String addNewFile(UserFile myFile) throws IllegalArgumentException {
+		//return fail
+		String res = "no";
 		
+		FileInputStream fis = null;
+        PreparedStatement pstmt = null;
 		try 
 		 {
-			 //consultamos a base de datos
-			 String Query= "INSERT INTO comentary(title,description,iduser) VALUES ('"+myFile.getTitle()+"','"+myFile.getDescription()+"','"+myFile.getIduser()+"')";
-			 
-			 PreparedStatement ps = conn.prepareStatement(Query);
-			 ps.executeUpdate();
-			 
-			 //recorremos resultado
-			 ps.close();
+			File file = new File(myFile.getFile());
+            fis = new FileInputStream(file);
+            //consultamos a base de datos
+			String Query= "INSERT INTO datafile (title,description,iduser,file) VALUES ('?','?','?','?')";
+			pstmt = conn.prepareStatement(Query);
+			pstmt.setString(1, myFile.getTitle());
+			pstmt.setString(2, myFile.getDescription());
+			pstmt.setString(3, myFile.getIduser());
+			pstmt.setAsciiStream(4, fis, (int) file.length());
+			int state = pstmt.executeUpdate();
+			//succes
+			if(state==1) res="yes";//return succes
+			 //else fail
+			
+			 pstmt.close();
+			 conn.commit();
 		 } 
 		 catch (SQLException sqle) 
 		 {
 		 	GWT.log(sqle.toString());
 		 	sqle.printStackTrace();
 			return "false: "+sqle.toString();
-		 }
-		return "true";
+		 } 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return res;
 	}
 	
 	//delete file
@@ -536,11 +583,146 @@ public class ServerServiceImpl extends RemoteServiceServlet implements ServerSer
 		 }
 		return "true";
 	}
-		
 	
+	//get all resume topic 
+	@Override
+	public List<ResumeTopic> NewestResumeTopic() throws IllegalArgumentException {
+
+		List<ResumeTopic> resumetopic = new ArrayList<ResumeTopic>();
+		 try 
+		 {
+			 //consultamos a base de datos
+			 String Query= "SELECT * FROM resume_topic ORDER BY creation DESC";
+			 PreparedStatement ps = conn.prepareStatement(Query);
+			 ResultSet result = ps.executeQuery();
+			 //recorremos resultado
+			 while (result.next()) 
+			 {
+				 //create  (String id,String title,String user,String total, Date created) 
+				 //add element to list
+				 resumetopic.add(new ResumeTopic(   result.getString("idtopic"), 
+							 						result.getString("title"),
+									 				result.getString("iduser"),
+									 				result.getString("name"), 
+									 				result.getString("total"),  
+									 				result.getString("creation")
+						 		  					));
+			 }
+			 result.close();
+			 ps.close();
+		 } 
+		 catch (SQLException sqle) 
+		 {
+		 	GWT.log(sqle.toString());
+		 	sqle.printStackTrace();
+		 }
+		 return resumetopic;
+	}
 	
+	//get all resume topic 
+	@Override
+	public List<ResumeTopic> OldestResumeTopic() throws IllegalArgumentException {
+
+		List<ResumeTopic> resumetopic = new ArrayList<ResumeTopic>();
+		 try 
+		 {
+			 //consultamos a base de datos
+			 String Query= "SELECT * FROM resume_topic ORDER BY creation ASC";
+			 PreparedStatement ps = conn.prepareStatement(Query);
+			 ResultSet result = ps.executeQuery();
+			 //recorremos resultado
+			 while (result.next()) 
+			 {
+				 //create  (String id,String title,String user,String total, Date created) 
+				 //add element to list
+				 resumetopic.add(new ResumeTopic(   result.getString("idtopic"), 
+							 						result.getString("title"),
+									 				result.getString("iduser"),
+									 				result.getString("name"), 
+									 				result.getString("total"),  
+									 				result.getString("creation")
+						 		  					));
+			 }
+			 result.close();
+			 ps.close();
+		 } 
+		 catch (SQLException sqle) 
+		 {
+		 	GWT.log(sqle.toString());
+		 	sqle.printStackTrace();
+		 }
+		 return resumetopic;
+	}	
 	
+	//get all resume topic 
+	@Override
+	public List<ResumeTopic> MyResumeTopic( String iduser) throws IllegalArgumentException {
+
+		List<ResumeTopic> resumetopic = new ArrayList<ResumeTopic>();
+		 try 
+		 {
+			 //consultamos a base de datos
+			 String Query= "SELECT * FROM resume_topic WHERE iduser = '"+iduser+"' ORDER BY creation ASC";
+			 PreparedStatement ps = conn.prepareStatement(Query);
+			 ResultSet result = ps.executeQuery();
+			 //recorremos resultado
+			 while (result.next()) 
+			 {
+				 //create  (String id,String title,String user,String total, Date created) 
+				 //add element to list
+				 resumetopic.add(new ResumeTopic(   result.getString("idtopic"), 
+							 						result.getString("title"),
+									 				result.getString("iduser"),
+									 				result.getString("name"), 
+									 				result.getString("total"),  
+									 				result.getString("creation")
+						 		  					));
+			 }
+			 result.close();
+			 ps.close();
+		 } 
+		 catch (SQLException sqle) 
+		 {
+		 	GWT.log(sqle.toString());
+		 	sqle.printStackTrace();
+		 }
+		 return resumetopic;
+	}	
 	
+	//get all resume topic 
+	@Override
+	public List<ResumeTopic> SearchResumeTopic(String specialword) throws IllegalArgumentException {
+
+		List<ResumeTopic> resumetopic = new ArrayList<ResumeTopic>();
+		 try 
+		 {
+			 //consultamos a base de datos SELECT * FROM table WHERE Column LIKE '%test%';
+			 String Query= "SELECT * FROM resume_topic WHERE title LIKE '%"+specialword+"%' ORDER BY creation DESC";
+			 PreparedStatement ps = conn.prepareStatement(Query);
+			 ResultSet result = ps.executeQuery();
+			 //recorremos resultado
+			 while (result.next()) 
+			 {
+				 //create  (String id,String title,String user,String total, Date created) 
+				 //add element to list
+				 resumetopic.add(new ResumeTopic(   result.getString("idtopic"), 
+							 						result.getString("title"),
+									 				result.getString("iduser"),
+									 				result.getString("name"), 
+									 				result.getString("total"),  
+									 				result.getString("creation")
+						 		  					));
+			 }
+			 result.close();
+			 ps.close();
+		 } 
+		 catch (SQLException sqle) 
+		 {
+		 	GWT.log(sqle.toString());
+		 	sqle.printStackTrace();
+		 }
+		 return resumetopic;
+	}	
 	
 	
 }//end class

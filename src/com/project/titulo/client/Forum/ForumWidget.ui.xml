@@ -4,6 +4,22 @@
   xmlns:gwt="urn:import:com.google.gwt.user.client.ui" xmlns:w="urn:import:com.google.gwt.widget.client">
 	<ui:style>
 	
+    .cellTable {
+	  padding:4px
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+      margin-bottom: 4px;
+      width:100%;
+    }
+    .pagerTable {
+      text-align: center;
+      align:center;
+    }
+    .panel{
+      text-align: center;
+      align:center;
+      width:100%;
+    }
 	.titleInput{
 		padding-top:5px;
 		width:100%;
@@ -14,7 +30,7 @@
 	}
 	.submitBtn{
 		padding-top:5px;
-		width:45%;
+		width:100%;
 		margin:2px;
 	    border-color: #245580
 	}
@@ -26,90 +42,57 @@
 		
 		<!-- MODAL - Menu opciones edición-->
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                 <section class="panel">
                     <header class="panel-heading">
                     <h3 class="panel-title">Tools</h3>
                     </header>
                     <div class="panel-body">
-                        <!-- Botones -->
-                        <div class="btn-group btn-group-justified">
-                            <a href="#myModal" data-toggle="modal" class="btn btn-primary">
-                              New Topic
-                            </a>
-                            <a href="#myModal-1" data-toggle="modal" class="btn  btn btn-primary">
-                              My Topics
-                            </a>
-                        </div>
-                        
-                        <!-- form1 flotante subir archivo-->    
-                        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                   <!-- Titulo form -->
-                                    <div class="modal-header">
-                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                        
-                                        <h4 class="modal-title">New Topic</h4>
-                                    </div>
-                                    <!-- cuerpo form -->
-                                    <div class="modal-body">
-
-								        <gwt:Label text="Title" horizontalAlignment="ALIGN_CENTER"/>
-								        <gwt:TextBox width="100%" maxLength="49" addStyleNames='{style.titleInput}'/>
-								        <gwt:Label text="Description" horizontalAlignment="ALIGN_CENTER"/>
-								        <gwt:RichTextArea addStyleNames='{style.textArea}'/>
-       									<w:TextButton decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Submit</w:TextButton>
-       									<w:TextButton decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Clean</w:TextButton>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- form1 flotante ayuda-->  
-                        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal-1" class="modal fade">
-                          <div class="modal-dialog">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                      <h4 class="modal-title">My Topics</h4>
-                                  </div>
-                                  <div class="modal-body">
-
-                                        <div id="collapseOne" class="panel-collapse collapse in">
-                                            <div class="panel-body">
-                                                
-                                                
-                                                
-
-                                            </div>
-                                         </div>
-
-                                  </div>
-
-                              </div>
-                          </div>
-                      </div>
-                        
+                   	 	<gwt:VerticalPanel ui:field="menu" addStyleNames='{style.panel}' width="100%">
+							<w:TextButton ui:field="modalNewTopic" decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Add Topic</w:TextButton>
+							<w:TextButton ui:field="modalMyTopic" decoration="PRIMARY" addStyleNames='{style.submitBtn}'>My Topics</w:TextButton>		 
+                        </gwt:VerticalPanel>
+                    </div>
+                </section>
+                <section class="panel">
+                    <header class="panel-heading">
+                    <h3 class="panel-title">Filter</h3>
+                    </header>
+                    <div class="panel-body">
+                   	 	<gwt:VerticalPanel ui:field="menu2" addStyleNames='{style.panel}' width="100%">
+							<w:TextButton ui:field="modalNewestTopic" decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Newest</w:TextButton>
+							<w:TextButton ui:field="modalOldestTopic" decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Oldest</w:TextButton>		 
+                        </gwt:VerticalPanel>
+                    </div>
+                </section>
+                <section class="panel">
+                    <header class="panel-heading">
+                    <h3 class="panel-title">Keyword</h3>
+                    </header>
+                    <div class="panel-body">
+                   	 	<gwt:VerticalPanel ui:field="menu3" addStyleNames='{style.panel}' width="100%">
+							
+							<gwt:TextBox ui:field="searchInput" addStyleNames='{style.titleInput}' width="100%" maxLength="40" alignment="CENTER" direction="LTR" textAlignment="ALIGN_CENTER"></gwt:TextBox>	
+							<w:TextButton ui:field="modalSearchTopic" decoration="PRIMARY" addStyleNames='{style.submitBtn}'>Search</w:TextButton>			 
+                        </gwt:VerticalPanel>
                     </div>
                 </section>
             </div>
-        	<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+
+        	<div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
                 <section class="panel">
                     <header class="panel-heading">
                         <h3 class="panel-title">Latest Topics</h3>
                     </header>
                     <div class="panel-body">
+                    
+                        <gwt:VerticalPanel ui:field="panel" addStyleNames='{style.cellTable}' width="100%">
                         
+                        </gwt:VerticalPanel>
                         
                     </div>
                 </section>
             </div>
-        </div>
-
-        <!-- Tabla con archivos -->
-        <div class="row">
-            
         </div>
         
 	

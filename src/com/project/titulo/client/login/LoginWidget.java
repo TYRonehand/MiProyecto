@@ -1,31 +1,25 @@
 package com.project.titulo.client.login;
 
-import java.util.Date;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.project.titulo.client.GoToUrl;
 import com.project.titulo.client.ServerService;
 import com.project.titulo.client.ServerServiceAsync;
-import com.project.titulo.client.home.HomeWidget;
-import com.project.titulo.client.menu.MenuUser;
-import com.project.titulo.client.model.User;
-import com.project.titulo.client.recovery.RecoveryWidget;
-import com.project.titulo.client.register.RegisterWidget;
+import com.project.titulo.shared.CookieVerify;
+import com.project.titulo.shared.ErrorVerify;
 import com.project.titulo.shared.FieldVerifier;
+import com.project.titulo.shared.model.User;
 
 public class LoginWidget extends Composite{
 
@@ -37,6 +31,10 @@ public class LoginWidget extends Composite{
 	@UiField Hyperlink registerLink;
 	@UiField Hyperlink recoveryLink;
 	
+	//cookie
+	private CookieVerify mycookie=new CookieVerify(false);
+	//url
+	private GoToUrl url = new GoToUrl();
 	//RPC
 	private final ServerServiceAsync serverService = GWT.create(ServerService.class);
 	
@@ -61,6 +59,7 @@ public class LoginWidget extends Composite{
 		//inicia widgets
 		initWidget(uiBinder.createAndBindUi(this));
 	}
+	
 	//limpiar inputs
 	private void clearInputs()
 	{
@@ -119,18 +118,14 @@ public class LoginWidget extends Composite{
 	@UiHandler("registerLink")
 	void onRegisteLinkClick(ClickEvent event) 
 	{
-		RootPanel.get("GWTcontainer").clear();
-		RootPanel.get("GWTmenu").clear();
-		RootPanel.get("GWTmenu").add(new RegisterWidget());
+		url.GoTo("REGISTER");
 	}
 	
 	//click recuperar link
 	@UiHandler("recoveryLink")
 	void onRecoveryLinkClick(ClickEvent event) 
 	{
-		RootPanel.get("GWTcontainer").clear();
-		RootPanel.get("GWTmenu").clear();
-		RootPanel.get("GWTmenu").add(new RecoveryWidget());
+		url.GoTo("RECOVERY");
 	}
 	
 	/*Evento click SUBMIT*/
@@ -140,55 +135,52 @@ public class LoginWidget extends Composite{
 		//no existen errores
 		if(passInput.getText().length()>=6 && mailInput.getText().length()>=6)
 		{
-			//consulta datos
-			serverService.authenticateUser( mailInput.getText(), passInput.getText(), new AsyncCallback<User>()
+			if(FieldVerifier.isValidMail(mailInput.getText()))
 			{
-				@Override
-				public void onFailure(Throwable caught) 
-				{
-					Window.alert(" UPS! Server is offline");
-					//limpiar input
-					clearInputs();
-				}
-
-				@Override
-				public void onSuccess(User result) 
-				{
-					//validaciones
-					if(result!=null)
+				
+					//consulta datos usuario normal				
+					serverService.authenticateUser( mailInput.getText(), passInput.getText(), new AsyncCallback<User>()
 					{
-						//is banned
-						if(result.getBanned().toString()=="1" || result.getBanned().toString()=="true")
+						@Override
+						public void onFailure(Throwable caught) 
 						{
-							Window.alert("Sorry but this account is temporaly banned");
+							ErrorVerify.getErrorAlert("offline");
+							//limpiar input
+							clearInputs();
 						}
-						else//Get in the account
-						{
-							//guardamos las cookies con info
-							Cookies.setCookie("MOPuser", result.getId(), new Date(new Date().getTime()+1000*60*60*1));
-							Cookies.setCookie("MOPmail", result.getMail(), new Date(new Date().getTime()+1000*60*60*1));
-							Cookies.setCookie("MOPname", result.getName()+" "+result.getLastname(), new Date(new Date().getTime()+1000*60*60*1));
-							Cookies.setCookie("MOPban", result.getBanned(), new Date(new Date().getTime()+1000*60*60*1));
-							
-							//clean
-							RootPanel.get("GWTmenu").clear();
-							RootPanel.get("GWTcontainer").clear();
-							// widget menu
-							RootPanel.get("GWTmenu").add( new MenuUser(Cookies.getCookie("MOPname"),true));
-							// widget  home
-							RootPanel.get("GWTcontainer").add(new HomeWidget());
-						}
-					}
-					else
-					{
-						Window.alert(" User or password don't exist.");
-						clearInputs();
-					}
-				}
-			});
 
+						@Override
+						public void onSuccess(User result) 
+						{
+							//validaciones
+							if(result.getId().length()>0)
+							{
+								//guardamos las cookies con info
+								mycookie.setCookieBanned(result.getBanned());
+								mycookie.setCookieMail(result.getMail());
+								mycookie.setCookieName(result.getName()+" "+result.getLastname());
+								mycookie.setCookieUser(result.getId());
+								
+								//go to home first time
+								url.GoTo("MENU");
+								url.GoTo("HOME");
+							}
+							else
+							{
+								ErrorVerify.getErrorAlert("wronguser");
+								clearInputs();
+							}
+						}
+						
+					});
+				
+			}
+			else
+			{
+				ErrorVerify.getErrorAlert("invalidmail");
+			}
 		}else{
-			Window.alert("Login or Password is too short!");
+			ErrorVerify.getErrorAlert("tooshort");
 		}
 		
 	}

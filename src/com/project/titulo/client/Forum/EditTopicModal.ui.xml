@@ -1,0 +1,70 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:w="urn:import:com.google.gwt.widget.client">
+	<ui:style>
+		.sendButton {
+		  display: block;
+		  font-size: 16pt;
+		}
+		.myFields {
+		  display: block;
+		  font-size: 12pt;
+		  border: solid 1px gray;
+		}
+		.dialogBox{
+    	  position: relative;
+		  top: 0px;
+		  left: 0px;
+		  z-index: 99999;
+		  display: block;
+		  font-size: 16pt;
+		  width:300px;
+		  padding:8px;
+		  align:center;
+		  background:white;
+		  border: 1px solid;
+		  border-radius: 3px;
+		  box-shadow: 10px 10px grey;
+		  font-weight: bold;
+		  
+		}
+		.verticalPanel{
+		
+		  padding:5px;
+		  padding-top:12px;
+		  display: block;
+		  font-size: 16pt;
+		  align:center;
+		  background:#f0f0f0;
+		  border-radius: 8px;
+		}
+		.HTMLheader{
+			height:80%;
+			width:80%;
+			align:center;
+			margin:auto;
+		  background:black;
+		}
+		
+	</ui:style>
+	<g:HTMLPanel  addStyleNames='{style.HTMLheader}' >
+	
+		<g:DialogBox ui:field="dialogBox"  width="100%" addStyleNames='{style.dialogBox}'>
+			<g:VerticalPanel ui:field="dialogVPanel" addStyleNames='{style.verticalPanel}' height="100%"  borderWidth="0" verticalAlignment="ALIGN_MIDDLE">
+			
+				<g:Label text="Title" direction="LTR"/>
+				<g:TextBox ui:field="titleInput"  addStyleNames='{style.myFields}' height="16px" width="100%" direction="LTR" textAlignment="ALIGN_CENTER" focus="true" maxLength="49" ></g:TextBox>
+				
+				<g:Label text="Response"/>
+				<g:RichTextArea ui:field="descriptionInput"   addStyleNames='{style.myFields}' width="100%" ></g:RichTextArea>
+				
+				<g:HorizontalPanel height="50px" width="100%" horizontalAlignment="ALIGN_CENTER" spacing="3" verticalAlignment="ALIGN_MIDDLE">
+					<w:TextButton ui:field="createBtn" width="100%" value="Post" decoration="PRIMARY" addStyleNames='{style.sendButton}'></w:TextButton>
+					<w:TextButton ui:field="cancelBtn" width="80%" value="Cancel" decoration="NEGATIVE" addStyleNames='{style.sendButton}'></w:TextButton>
+				</g:HorizontalPanel>
+				
+			</g:VerticalPanel>
+		</g:DialogBox>
+	
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -16,12 +16,21 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.project.titulo.client.GoToUrl;
 import com.project.titulo.client.login.LoginWidget;
+import com.project.titulo.shared.CookieVerify;
+import com.project.titulo.shared.ErrorVerify;
 import com.project.titulo.shared.FieldVerifier;
 
 
 public class RecoveryWidget extends Composite {
 
+	//cookies
+	private CookieVerify mycookie = new CookieVerify(false);
+	//goto url
+	public GoToUrl url = new GoToUrl();
+	
+	
 	@UiField Hyperlink backLink;
 	@UiField TextBox mailInput;
 	@UiField Label labelError1;
@@ -35,8 +44,7 @@ public class RecoveryWidget extends Composite {
 	@UiField VerticalPanel panelNewCode;
 	@UiField VerticalPanel panelNewPassword;
 	
-	private static recoveryWidgetUiBinder uiBinder = GWT
-			.create(recoveryWidgetUiBinder.class);
+	private static recoveryWidgetUiBinder uiBinder = GWT.create(recoveryWidgetUiBinder.class);
 
 	interface recoveryWidgetUiBinder extends UiBinder<Widget, RecoveryWidget> {
 	}
@@ -98,9 +106,7 @@ public class RecoveryWidget extends Composite {
 	@UiHandler("backLink")
 	void onRegisteLinkClick(ClickEvent event) 
 	{
-		RootPanel.get("GWTcontainer").clear();
-		RootPanel.get("GWTmenu").clear();
-		RootPanel.get("GWTmenu").add(new LoginWidget());
+		url.GoTo("LOGIN");
 	}
 	
 	/*Evento click SEND CODE*/
@@ -116,7 +122,9 @@ public class RecoveryWidget extends Composite {
 		{
 			labelError1.setVisible(false);
 			//create unique code
+			
 			//save in the user DB
+			
 			//send mail to user
 			
 			//clean container
@@ -126,11 +134,10 @@ public class RecoveryWidget extends Composite {
 				panelNewCode.setVisible(true);
 				
 			//else
-			//Window.alert("Sorry an error ocurred, please try later.");
+			//ErrorVerify.getErrorAlert("fatal");
 			
 		}else{
-			
-			Window.alert("Please enter a valid mail (example@gmail.com)");
+			ErrorVerify.getErrorAlert("invalidmail");
 		}
 		
 	}
@@ -153,10 +160,10 @@ public class RecoveryWidget extends Composite {
 				panelNewCode.setVisible(false);
 				panelNewPassword.setVisible(true);
 			//else
-			//Window.alert("Sorry an error ocurred, please try later.");
+			//ErrorVerify.getErrorAlert("fatal");
 			
 		}else{
-			Window.alert("Please enter a valid mail (example@gmail.com)");
+			ErrorVerify.getErrorAlert("invalidmail");
 		}
 		
 	}
@@ -181,13 +188,13 @@ public class RecoveryWidget extends Composite {
 			labelError3.setVisible(false);
 			labelError4.setVisible(false);
 			//if
-				Window.alert("Password saved!");
+			ErrorVerify.getErrorAlert("successupdate");
 			
 			//else
 			//Window.alert("Sorry an error ocurred, please try later.");
 			
 		}else{
-			Window.alert("Please enter a valid mail (example@gmail.com)");
+			ErrorVerify.getErrorAlert("invalidmail");
 			
 		}
 		

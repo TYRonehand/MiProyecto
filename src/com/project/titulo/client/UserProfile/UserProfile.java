@@ -18,8 +18,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.project.titulo.client.ServerService;
 import com.project.titulo.client.ServerServiceAsync;
-import com.project.titulo.client.model.User;
 import com.project.titulo.shared.DataOptional;
+import com.project.titulo.shared.ErrorVerify;
+import com.project.titulo.shared.model.User;
 
 public class UserProfile extends Composite {
 
@@ -68,7 +69,7 @@ public class UserProfile extends Composite {
 		String[] countryList = DataOptional.getCountries(); 
 		for(String country : countryList)
 		{
-			countryBox.addItem(country);
+			countryBox.addItem(country.substring(3));
 		}
 	}
 	
@@ -178,7 +179,7 @@ public class UserProfile extends Composite {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("Ups! no connection to DataBase.");
+					ErrorVerify.getErrorAlert("offline");
 					LoadDataView(UserInfo);
 				}
 
@@ -186,11 +187,11 @@ public class UserProfile extends Composite {
 				public void onSuccess(Boolean result) {
 					if(result)
 					{
-						Window.alert("Awesome!, data updated.");
+						ErrorVerify.getErrorAlert("successupdate");
 						RootPanel.get("GWTcontainer").clear();
 						RootPanel.get("GWTcontainer").add(new UserProfile(auxid));
 					}else{
-						Window.alert("Ups! somthing went bad.");
+						ErrorVerify.getErrorAlert("offline");
 						LoadDataView(UserInfo);
 					}
 					

@@ -18,15 +18,24 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.project.titulo.client.GoToUrl;
 import com.project.titulo.client.ServerService;
 import com.project.titulo.client.ServerServiceAsync;
 import com.project.titulo.client.login.LoginWidget;
-import com.project.titulo.client.model.User;
+import com.project.titulo.shared.CookieVerify;
 import com.project.titulo.shared.DataOptional;
+import com.project.titulo.shared.ErrorVerify;
 import com.project.titulo.shared.FieldVerifier;
+import com.project.titulo.shared.model.User;
 
 public class RegisterWidget extends Composite {
 
+	//cookies
+	private CookieVerify mycookie = new CookieVerify(false);
+	//goto url
+	public GoToUrl url = new GoToUrl();
+	
+	
 	@UiField  Label labelError1;
 	@UiField  Label labelError2;
 	@UiField  Label labelError3;
@@ -53,7 +62,8 @@ public class RegisterWidget extends Composite {
 	public RegisterWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
 		//block pass input repeat until pass1 es ready
-		pass2Input.setEnabled(false);
+		//pass2Input.setEnabled(false);
+		
 		//load country to combobox
 		addCountry();
 	}
@@ -63,7 +73,7 @@ public class RegisterWidget extends Composite {
 		String[] countryList = DataOptional.getCountries(); 
 		for(String country : countryList)
 		{
-			countryBox.addItem(country);
+			countryBox.addItem(country.substring(3));
 		}
 	}
 
@@ -190,9 +200,7 @@ public class RegisterWidget extends Composite {
 	@UiHandler("backLink")
 	void onBackLinkClick(ClickEvent event) 
 	{
-		RootPanel.get("GWTcontainer").clear();
-		RootPanel.get("GWTmenu").clear();
-		RootPanel.get("GWTmenu").add(new LoginWidget());
+		url.GoTo("LOGIN");
 	}
 	
 	//submit register
@@ -206,7 +214,8 @@ public class RegisterWidget extends Composite {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("Ups. this mail already exist!");
+					
+					ErrorVerify.getErrorAlert("mailexist");
 				}
 
 				@Override
@@ -235,7 +244,7 @@ public class RegisterWidget extends Composite {
 						registerUser(newUser);
 					}
 					else{
-						Window.alert("User already exist");
+						ErrorVerify.getErrorAlert("userexist");
 					}
 				}
 			});//end service
@@ -258,13 +267,16 @@ public class RegisterWidget extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Server offline: "+caught);
+
+				ErrorVerify.getErrorAlert("offline");
 				
 			}
 
 			@Override
 			public void onSuccess(String result) {
-				Window.alert("Done!");
+
+				ErrorVerify.getErrorAlert("successadd");
+				
 				RootPanel.get("GWTcontainer").clear();
 				RootPanel.get("GWTmenu").clear();
 				RootPanel.get("GWTmenu").add(new LoginWidget());

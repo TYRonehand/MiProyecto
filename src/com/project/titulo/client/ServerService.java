@@ -5,13 +5,20 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.project.titulo.client.model.*;
+import com.project.titulo.shared.model.Answer;
+import com.project.titulo.shared.model.ResumeTopic;
+import com.project.titulo.shared.model.Topic;
+import com.project.titulo.shared.model.User;
+import com.project.titulo.shared.model.UserFile;
 
 /**
  * The client-side stub for the RPC service.
  */
 @RemoteServiceRelativePath("service")
 public interface ServerService extends RemoteService {
+	
+	//autenticacion
+	User authenticateAdmin(String user, String pass) throws IllegalArgumentException;
 	
 	//consultar existencia usuario
 	Boolean userExist(String mail) throws IllegalArgumentException;
@@ -45,6 +52,20 @@ public interface ServerService extends RemoteService {
 	
 	//set info
 	Boolean setTopic(Topic myTopic) throws IllegalArgumentException;
+	
+
+	//all resume topic
+	List<ResumeTopic> NewestResumeTopic() throws IllegalArgumentException;
+
+	//all resume topic
+	List<ResumeTopic> OldestResumeTopic() throws IllegalArgumentException;
+
+	//all resume topic
+	List<ResumeTopic> MyResumeTopic(String iduser) throws IllegalArgumentException;
+
+	//all resume topic
+	List<ResumeTopic> SearchResumeTopic(String specialword) throws IllegalArgumentException;
+	
 
 	//new coment
 	String addNewComment(Answer myAnswer) throws IllegalArgumentException;

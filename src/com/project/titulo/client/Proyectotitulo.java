@@ -1,60 +1,36 @@
 package com.project.titulo.client;
 
+import java.util.Collection;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.project.titulo.client.home.HomeWidget;
-import com.project.titulo.client.login.LoginWidget;
-import com.project.titulo.client.menu.MenuUser;
+import com.project.titulo.shared.CookieVerify;
 
-/**
- * Entry point classes define <code>onModuleLoad()</code>.
- */
-public class Proyectotitulo implements EntryPoint {
+//Entry Point
+public class Proyectotitulo implements EntryPoint 
+{
+	//control url
+	public GoToUrl url = new GoToUrl();
 
-	/**
-	 * This is the entry point method.
-	 */
+	
 	public void onModuleLoad() 
-	{
-		//si los datos aun estan guardados en cookiesentramos sin consultar
-		if(!Cookies.getCookie("MOPuser").equals("") && !Cookies.getCookie("MOPmail").equals("") && !Cookies.getCookie("MOPname").equals("") && !Cookies.getCookie("MOPban").equals(""))
+	{	
+		//pide lista de cookies en el dominio actual
+		Collection<String> cok=Cookies.getCookieNames();
+		//si existen cookies
+		if(cok.size()>=4)
 		{
-			//si no esta baneado
-			if(Cookies.getCookie("MOPban").equals("0") ||Cookies.getCookie("MOPban").equals("%00") || Cookies.getCookie("MOPban").equals("false"))//true
-			{
-				//clean all
-				RootPanel.get("GWTcontainer").clear();
-				RootPanel.get("GWTmenu").clear();
-				//menu widget
-				RootPanel.get("GWTmenu").add(new MenuUser(Cookies.getCookie("MOPname"),true));
-				//home Widget
-				RootPanel.get("GWTcontainer").add(new HomeWidget());
-				
-			}
-			else if(Cookies.getCookie("MOPban").equals("1") || Cookies.getCookie("MOPban").equals("true"))//false
-			{
-				//alert si el usuario a sido baneado
-				Window.alert("We are sorry! but you are banned temporaly.");
-				GoToLogin();
-			}else
-				GoToLogin();
-			
+			//cookie
+			CookieVerify mycookie = new CookieVerify(false);
+			//load menu
+			url.GoTo("MENU");
+			//last  Widget called
+			url.GoTo(mycookie.getCookieIdurl());
 		}
-		else{
-			GoToLogin();
-				
+		else//if cookies dont exist send to login
+		{
+			url.GoTo("LOGIN");
 		}
-		
 	}
-	
-	private void GoToLogin(){
-		// widget close session	
-		RootPanel.get("GWTmenu").clear();	
-		//cualquier otro caso sera enviado al login
-		RootPanel.get("GWTmenu").add(new LoginWidget());
-	}
-	
 	
 }
